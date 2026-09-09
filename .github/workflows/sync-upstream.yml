@@ -2,7 +2,7 @@ name: Sync upstream
 
 on:
   schedule:
-    - cron: "0 6 * * *" # daily at 06:00 UTC
+    - cron: "0 14 * * *" # daily at 14:00 UTC = 10:00 EDT (09:00 EST in winter)
   workflow_dispatch:
 
 permissions:

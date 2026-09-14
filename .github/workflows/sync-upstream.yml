@@ -2,7 +2,7 @@ name: Sync upstream
 
 on:
   schedule:
-    - cron: "0 14 * * *" # daily at 14:00 UTC = 10:00 EDT (09:00 EST in winter)
+    - cron: "37 * * * *" # hourly; GitHub delays scheduled runs by hours, so daily was too coarse
   workflow_dispatch:
 
 permissions:

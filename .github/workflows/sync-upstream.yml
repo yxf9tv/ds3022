@@ -2,7 +2,7 @@ name: Sync upstream
 
 on:
   schedule:
-    - cron: "37 * * * *" # hourly; GitHub delays scheduled runs by hours, so daily was too coarse
+    - cron: "5 * * * *" # hourly at :05; GitHub delays scheduled runs, so daily was too coarse
   workflow_dispatch:
 
 permissions:

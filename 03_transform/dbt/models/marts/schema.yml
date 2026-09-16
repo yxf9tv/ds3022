@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: fct_trips
+    description: One row per validated trip with derived duration/speed/tip metrics.
+    columns:
+      - name: trip_duration_minutes
+        tests:
+          - not_null
+      - name: pickup_date
+        tests:
+          - not_null
+
+#  - name: mart_hourly_demand
+#    description: >
+#      Trip volume and averages by hour of day (0-23) — the demand-curve
+#      grain for QUESTIONS.md #1.
+#    columns:
+#      - name: pickup_hour
+#        tests:
+#          - unique
+#          - not_null
+#      - name: trip_count
+#        tests:
+#          - not_null

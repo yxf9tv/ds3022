@@ -33,3 +33,9 @@ where
     and trip_distance_miles > 0
     and fare_amount > 0
     and passenger_count > 0
+    -- drop trips whose average speed is null, non-positive, or over 60 mph:
+    -- above ~60 the trip counts stop tapering and are mostly GPS/meter glitches
+    and trip_distance_miles
+        / nullif(date_diff('second', pickup_at, dropoff_at) / 3600.0, 0) > 0
+    and trip_distance_miles
+        / nullif(date_diff('second', pickup_at, dropoff_at) / 3600.0, 0) <= 60

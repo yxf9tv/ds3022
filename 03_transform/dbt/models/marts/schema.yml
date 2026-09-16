@@ -11,15 +11,15 @@ models:
         tests:
           - not_null
 
-#  - name: mart_hourly_demand
-#    description: >
-#      Trip volume and averages by hour of day (0-23) — the demand-curve
-#      grain for QUESTIONS.md #1.
-#    columns:
-#      - name: pickup_hour
-#        tests:
-#          - unique
-#          - not_null
-#      - name: trip_count
-#        tests:
-#          - not_null
+  - name: mart_hourly_demand
+    description: >
+      Trip volume and averages by hour of day (0-23) — the demand-curve
+      grain for QUESTIONS.md #1.
+    columns:
+      - name: pickup_hour
+        tests:
+          - unique
+          - not_null
+      - name: trip_count
+        tests:
+          - not_null

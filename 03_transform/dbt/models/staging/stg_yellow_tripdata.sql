@@ -1,5 +1,7 @@
 -- Staging: light cleanup and standardization of raw parquet columns.
--- Materialized as a view — cheap, and dbt-duckdb reads parquet lazily.
+-- Materialized as a table — pulls all 12 remote parquet files once per
+-- rebuild and caches the result locally, so downstream models and ad
+-- hoc queries don't re-fetch from the network every time.
 
 with source as (
     select * from {{ source('raw', 'yellow_tripdata') }}

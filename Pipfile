@@ -11,8 +11,8 @@ duckdb = "*"
 pyarrow = "*"
 seaborn = "*"
 numpy = "*"
-dbt-duckdb = "*"
 dbt-core = "*"
+dbt-duckdb = "*"
 
 [dev-packages]
 

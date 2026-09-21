@@ -1,9 +1,10 @@
-"""Heatmap of avg_speed_mph by hour of day x day of week, from fct_trips.
+"""Plot avg speed by day-of-week x hour from the mart_speed_by_hour_dow dbt model.
 
 Answers QUESTIONS.md #5 — does speed (a congestion proxy) track known NYC
 traffic patterns, slower during rush hours and faster overnight?
 
-Run `dbt build` first so fct_trips exists in nyc_taxi.duckdb, then:
+Run `dbt run --select +mart_speed_by_hour_dow` first so the table exists in
+nyc_taxi.duckdb, then:
 
     python plot_speed_by_hour_dow.py
 """
@@ -25,27 +26,20 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
 )
 
-# isodow: 1=Monday ... 7=Sunday, so the pivoted heatmap reads Mon->Sun top to bottom
-DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+# DuckDB's dayofweek() is 0=Sunday..6=Saturday; reorder Mon-Sun for a
+# commute-week-first reading of the heatmap.
+DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 
 def main():
     con = duckdb.connect(str(DB_PATH), read_only=True)
     df = con.execute(
-        """
-        select
-            isodow(pickup_at) as day_of_week,
-            hour(pickup_at)   as hour_of_day,
-            avg(avg_speed_mph) as avg_speed_mph
-        from fct_trips
-        group by 1, 2
-        order by 1, 2
-        """
+        "select pickup_day_name, pickup_hour, avg_speed_mph from mart_speed_by_hour_dow"
     ).df()
     con.close()
 
-    pivot = df.pivot(index="day_of_week", columns="hour_of_day", values="avg_speed_mph")
-    pivot.index = [DAY_NAMES[d - 1] for d in pivot.index]
+    pivot = df.pivot(index="pickup_day_name", columns="pickup_hour", values="avg_speed_mph")
+    pivot = pivot.reindex(DAY_ORDER)
 
     sns.set_theme(style="white")
     fig, ax = plt.subplots(figsize=(14, 6))
@@ -59,9 +53,9 @@ def main():
         ax=ax,
     )
 
-    ax.set_title("NYC Yellow Taxi Avg Speed by Hour of Day and Day of Week (2025)")
+    ax.set_title("NYC Yellow Taxi Avg Speed by Day of Week and Hour (2025)")
     ax.set_xlabel("Pickup Hour (0-23)")
-    ax.set_ylabel("Day of Week")
+    ax.set_ylabel("")
 
     fig.tight_layout()
     fig.savefig(OUTPUT_PATH, dpi=150)
@@ -74,5 +68,3 @@ if __name__ == "__main__":
     except Exception:
         logging.exception("plot_speed_by_hour_dow failed")
         raise
-
-

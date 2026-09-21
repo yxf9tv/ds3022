@@ -234,3 +234,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Downloaded parquet files from 03_transform/dbt/load.py
+03_transform/dbt/data/

@@ -17,7 +17,6 @@ import os
 import httpx
 
 
-OWNER, NAME = "duckdb", "duckdb"   # org/repo to fetch closed issues from
 PER_PAGE = 100                     # GitHub max is 100
 MAX_PAGES = 3                      # keep the demo small
 
@@ -25,10 +24,11 @@ TOKEN = os.environ["GH_PAT"]
 HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 URL = "https://api.github.com/graphql"
 
-# the query: variables ($owner, $name, $cursor) are passed separately from the query text
+# the query: the repo is hard-coded; $cursor is a variable 
+# because it changes every page
 QUERY = """
-query($owner: String!, $name: String!, $cursor: String) {
-  repository(owner: $owner, name: $name) {
+query($cursor: String) {
+  repository(owner: "pandas-dev", name: "pandas") {
     issues(states: CLOSED, first: %d, after: $cursor,
            orderBy: {field: CREATED_AT, direction: DESC}) {
       totalCount
@@ -41,14 +41,13 @@ query($owner: String!, $name: String!, $cursor: String) {
       }
     }
   }
-  rateLimit { cost remaining resetAt }
 }
 """ % PER_PAGE
 
 # function to POST one page of the query; returns the `issues` block or None on failure
 def fetch_page(cursor=None):
   try:
-    payload = {"query": QUERY, "variables": {"owner": OWNER, "name": NAME, "cursor": cursor}}
+    payload = {"query": QUERY, "variables": {"cursor": cursor}}
     r = httpx.post(URL, headers=HEADERS, json=payload, timeout=30)
     r.raise_for_status()
     data = r.json()
@@ -58,8 +57,6 @@ def fetch_page(cursor=None):
       print(f"GraphQL errors: {data['errors']}")
       return None
 
-    rl = data["data"]["rateLimit"]
-    print(f"cost {rl['cost']} | remaining {rl['remaining']} | resets {rl['resetAt']}")
     return data["data"]["repository"]["issues"]
   except httpx.HTTPError as e:
     print(f"request failed: {e}")

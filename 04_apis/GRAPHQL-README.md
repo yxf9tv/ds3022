@@ -25,16 +25,16 @@ Every call is a POST with a JSON body holding the query text and its variables:
 ```python
 payload = {
   "query": QUERY,                                   # the GraphQL text
-  "variables": {"owner": "duckdb", "name": "duckdb", "cursor": None},
+  "variables": {"cursor": None},                   # None = start at the first page
 }
 r = httpx.post("https://api.github.com/graphql", headers=HEADERS, json=payload)
 ```
 
-The query itself:
+The query itself, fetching closed issues from [pandas](https://github.com/pandas-dev/pandas):
 
 ```graphql
-query($owner: String!, $name: String!, $cursor: String) {   # declare variables + types
-  repository(owner: $owner, name: $name) {                  # entry point (a "query" field)
+query($cursor: String) {                                    # declare variables + types
+  repository(owner: "pandas-dev", name: "pandas") {         # entry point (a "query" field)
     issues(states: CLOSED, first: 100, after: $cursor) {    # a connection, with arguments
       totalCount
       pageInfo { hasNextPage endCursor }                    # pagination info
@@ -46,9 +46,12 @@ query($owner: String!, $name: String!, $cursor: String) {   # declare variables 
       }
     }
   }
-  rateLimit { cost remaining resetAt }                      # optional: see what this cost
 }
 ```
+
+The repo is typed directly into the query. `$cursor` is a variable because it changes on
+every page. To see what a query costs, add `rateLimit { cost remaining resetAt }` at the
+top level, alongside `repository`.
 
 Key terms:
 

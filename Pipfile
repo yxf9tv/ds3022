@@ -27,6 +27,7 @@ httpx2 = "*"
 asyncio = "*"
 websocket-client = "*"
 requests_sse = "*"
+fastapi = "<0.155"
 
 [dev-packages]
 

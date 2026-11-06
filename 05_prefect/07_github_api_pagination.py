@@ -67,8 +67,25 @@ def ingest_data():
     # if you need to see a working example of this, see this file in this repo
     # 04_apis/05_pagination.py
 
-    # just a placeholder for now. remove the print below this is built out
-    print("something")
+    logger = get_run_logger()
+    url, params = URL, {"per_page": PER_PAGE}  # params only needed on the first request
+    commits = []
+
+    # follow the "next" link until the last page or PAGES pages are fetched
+    for page in range(1, PAGES + 1):
+        if not url:
+            break
+        response = httpx.get(url, headers=HEADERS, params=params, timeout=30)
+        response.raise_for_status()  # a non-2xx status raises, so Prefect retries the task
+        batch = response.json()
+        logger.info(f"page {page}: {len(batch)} commits")
+        commits.extend(batch)
+
+        url = response.links.get("next", {}).get("url")  # None on the last page
+        params = None
+
+    print(f"fetched {len(commits)} commits")
+    return commits
 
 
 # name the flow something you can identify as yourself
@@ -76,5 +93,7 @@ def ingest_data():
 def main_flow():
     ingest_data()
 
-# it doesn't seem this flow executes when you run it. Why?
-# fix it ;^)
+# The flow did not run because nothing called main_flow(). Defining a flow
+# only registers it. This guard calls it when the file runs as a script.
+if __name__ == "__main__":
+    main_flow()

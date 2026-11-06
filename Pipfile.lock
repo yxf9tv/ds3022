@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "29cddffb5f2df62a9dcb1b2570b2f19b92f6baab7ecc0f29265771c0cf5adfc3"
+            "sha256": "f31cf93369ce43285e5089fa3ad9b7827edfb93b235616f4a38e2c631622f03e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -953,11 +953,12 @@
         },
         "fastapi": {
             "hashes": [
-                "sha256:3785963de305dd09912426cb81f2d230fce98ab3521cdfe97265c8d14983128c",
-                "sha256:6a22c1e2e6e32e0633ee7e170f00009a29b8228b16feb219ee42f32fd8d88a8f"
+                "sha256:339a8fad10b98ecf9f15b5b1cfadc276d64556578f5fbfa475091901a45cbfd7",
+                "sha256:8989cd9bf0a368d465b80eb696e880def8363be0ed2441518ef3c4f76b47c0cd"
             ],
+            "index": "pypi",
             "markers": "python_version >= '3.10'",
-            "version": "==0.162.0"
+            "version": "==0.154.0"
         },
         "fastavro": {
             "hashes": [
@@ -1352,11 +1353,11 @@
         },
         "jsonpatch": {
             "hashes": [
-                "sha256:46260c5df952abd4734a098f94512dc00bc38539152ac3ef069ed0475e4f5695",
-                "sha256:debc3e7bdc3d446468d64987f51a0e7a9deea42987ff90a6d1005a489b471c19"
+                "sha256:8c1849545b8b245623274b881e18cf5606dc4f11272cde327d3c1f3997181097",
+                "sha256:d0a314128ec7fc7dba7155b0b19f94913198f54acbbef9c7817d5063d998bc27"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==1.38"
+            "version": "==1.39"
         },
         "jsonpath-ng": {
             "hashes": [
@@ -1368,11 +1369,11 @@
         },
         "jsonpointer": {
             "hashes": [
-                "sha256:82e839a3ba3a9e2b54394fda8b3d276c2459d80408d06ef9a6fbc369d7544ffc",
-                "sha256:a45c858f8a9e171f6b3790ed9446c9382782f6c4cb4589176813c5a553f4cfcd"
+                "sha256:41005d228d8a6ec517b727d2821b7fa16e6bfc7c695ca3339f8331cccaba3887",
+                "sha256:58734c45431c9a268df029a39bce8d57e8aebe32f1d58d28a17c9aa246e10929"
             ],
             "markers": "python_version >= '3.10'",
-            "version": "==3.6"
+            "version": "==3.7"
         },
         "jsonschema": {
             "hashes": [

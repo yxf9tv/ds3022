@@ -255,3 +255,6 @@ __marimo__/
 
 # Quix Streams local state directory
 state/
+
+# Local Prefect home (database, storage)
+.prefect/

@@ -28,6 +28,7 @@ asyncio = "*"
 websocket-client = "*"
 requests_sse = "*"
 fastapi = "<0.155"
+orjson = "*"
 
 [dev-packages]
 
